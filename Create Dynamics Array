@@ -3,6 +3,8 @@ using namespace std;
 
 //array insert
 //array delete
+//Linear Search
+//Binary Search
 
 class data_struc{
     public:
@@ -61,11 +63,45 @@ int array_delete(data_struc *arr, int *u_size, int position){   //delete ith pos
     return 0;
 }
 
+int linear_search(data_struc *arr, int u_s, int value){     //Linear Search
+    for(int i=0; i<u_s; i++)
+    {
+        if((arr->ptr)[i] == value)
+        {
+            return value;
+        }
+    }
+    return 0;
+}
+
+int binary_search(data_struc *arr, int u_s, int value){     //Binary Search
+    
+    int low, last, mid;
+    low = 0, last = u_s-1;
+    
+    while(last>=low)
+    {
+        mid = (last+low)/2;
+        
+        if((arr->ptr)[mid] == value){
+            return value;
+        }
+        else if((arr->ptr)[mid] > value){
+            last = mid-1;
+        }
+        else if((arr->ptr)[mid] < value){
+            low = mid+1;
+        }
+    }
+    
+    return -1;
+}
+
 int main()
 {
     data_struc marks;
     
-    int t_s = 10, u_s = 5;
+    int t_s = 50, u_s = 20;
     int insert_value = 7, insert_position = 2;  //insert value and position
     
     create_array(&marks, t_s, u_s);
@@ -74,9 +110,14 @@ int main()
     cout<<"After Insert a Value: ";
     array_insert(&marks, &u_s, insert_value, insert_position);
     show_value(&marks, &u_s);
+    
     cout<<endl<<"After Delete Value: ";
     array_delete(&marks, &u_s, insert_position);
     show_value(&marks, &u_s);
+    
+    cout<<endl<<"Linear Search: "<<linear_search(&marks, u_s, 20);
+    cout<<endl<<"Binary Search: "<<binary_search(&marks, u_s, 240);
+    
     
     
     free(marks.ptr);

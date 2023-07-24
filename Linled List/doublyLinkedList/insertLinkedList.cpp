@@ -1,4 +1,4 @@
-//Delete Linked List Note by any Position;
+//Double Linked List Insertion;
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -12,6 +12,7 @@ class Node{
     
         Node(){}
         Node(int data){
+            
             this -> previousNode = NULL;
             this -> data = data;
             this -> nextNode = NULL;
@@ -41,7 +42,6 @@ void linkedListLength(Node* head, int& length){
         length++;
     }
     cout<<endl;
-    //cout<<"Length: "<<length<<endl;
 }
 
 void insertAtHead(Node* &head, int &data){
@@ -68,28 +68,25 @@ void insertAtPosition(Node* &head, Node* &tail, int& position, int& data){
         return  ;
     }
     
-    Node* current = head;
-    Node* previous = NULL;
-    Node* newNode = new Node(data);
+    Node* temp = head;
     
     int count = 1;
-    while(count < position){
-        previous = current;
-        current = current -> nextNode;
+    while(count < position-1){
+        temp = temp -> nextNode;
         count++;
     }
     
-    if(current == NULL){
+    if(temp -> nextNode == NULL){
         insertAtTail(tail, data);
         return ;
     }
     
+    Node* newNode = new Node(data);
     
-    previous -> nextNode = newNode;
-    newNode -> previousNode = previous;
-    
-    newNode -> nextNode = current;
-    current -> previousNode = newNode;
+    newNode -> nextNode = temp -> nextNode;
+    temp -> nextNode = newNode;
+    newNode -> previousNode = temp;
+    newNode -> nextNode -> previousNode = newNode;
     
 }
 
@@ -106,13 +103,10 @@ int main()
     
     {   //inset at head
     
-        data = 28;
+        data = 252;
         insertAtHead(head, data);
         
-         data = 252;
-        insertAtHead(head, data);
-        
-         data = 2;
+        data = 2;
         insertAtHead(head, data);
     }
     
@@ -137,7 +131,7 @@ int main()
         position = 2, data = 456;
         insertAtPosition(head, tail, position, data);
         
-        position = 10, data = 2252;
+        position = 9, data = 2252;
         insertAtPosition(head, tail, position, data);
         
     }

@@ -1,4 +1,4 @@
-//Double Linked List Insertion;
+//Delete Linked List Note by any Position;
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -6,156 +6,172 @@ using namespace std;
 class Node{
     public:
     
-    Node* previousNode;
     int data;
     Node* nextNode;
-    
+        
         Node(){}
         Node(int data){
-            
-            this -> previousNode = NULL;
             this -> data = data;
             this -> nextNode = NULL;
         }
         
-        
+        ~Node(){
+            int data = this -> data;
+            while(nextNode != NULL){
+                delete nextNode;
+                nextNode = NULL;
+            }
+        }
 };
 
-void displayData(Node* head){
+void displayData(Node* &head){
+    if(head == NULL){
+        return;
+    }
     Node* temp = head;
-    
     while(temp != NULL){
         cout<<temp -> data<<" -> ";
-        temp = temp -> nextNode;
+        temp = temp -> nextNode ;
     }
     cout<<endl;
 }
 
-void linkedListLength(Node* head, int& length){
-    Node* temp = head;
-    
-    length = 0;
-    cout<<"List: ";
-    while(temp != NULL){
-        cout<<temp -> data<<" -> ";
-        temp = temp -> nextNode;
-        length++;
-    }
-    cout<<endl;
-}
-
-void insertAtHead(Node* &head, Node* &tail, int &data){
+void insertAtHead(Node* &head, int &data){
     Node* temp = new Node(data);
-    
-    if(head==NULL){
-        head = temp;
-        tail = temp;
-        return ;
-    }
-    
     temp -> nextNode = head;
-    head -> previousNode = temp;
     head = temp;
 }
 
-void insertAtTail(Node* &head, Node* &tail, int &data){
-    
+void insertAtTail(Node* &tail, int &data){
     Node* temp = new Node(data);
-    
-    if(tail == NULL){
-        tail = temp;
-        head = temp;
-        
-        return ;
-    }
-    
-    temp -> previousNode = tail;
     tail -> nextNode = temp;
-    
     tail = temp;
-    
 }
 
-void insertAtPosition(Node* &head, Node* &tail, int& position, int& data){
-    if(position==1){
-        insertAtHead(head, tail, data);
-        return  ;
+void insertAtAnyPosition(Node* &head, Node* &tail, int& position, int& data){
+    
+    int count=1;
+    
+    if(position == 1){
+        insertAtHead(head, data);
+        return ;
     }
     
     Node* temp = head;
     
-    int count = 1;
     while(count < position-1){
         temp = temp -> nextNode;
         count++;
     }
     
     if(temp -> nextNode == NULL){
-        insertAtTail(head, tail, data);
+        insertAtTail(tail, data);
         return ;
     }
     
-    Node* newNode = new Node(data);
+    Node* insertNewNode = new Node(data);
     
-    newNode -> nextNode = temp -> nextNode;
-    temp -> nextNode = newNode;
-    newNode -> previousNode = temp;
-    newNode -> nextNode -> previousNode = newNode;
+    insertNewNode -> nextNode = temp -> nextNode;
+    temp -> nextNode = insertNewNode;
     
+}
+
+
+void deleteNode(Node* &head, Node* &tail, int &position){
+    
+    if(position == 1){
+        Node* temp = head;
+        head = head -> nextNode;
+        
+        temp -> nextNode = NULL;
+        
+        delete temp;
+        
+        return ;
+    }
+    
+    
+    int count = 1;
+    
+    Node* previous = NULL;
+    Node* current = head;
+    
+    while(count < position){
+        previous = current;
+        current = current -> nextNode; 
+        count++;
+    }
+    
+    
+   if(current -> nextNode == NULL){
+       tail = previous;
+   }
+    
+    previous -> nextNode = current -> nextNode;
+    current -> nextNode = NULL;
+    
+    delete current;
 }
 
 int main()
 {
-    int length = 0, data = 0, position = 0;
-    //Node* node1 = new Node(225);
+   int data=0, position = 0; 
     
-    Node* head = NULL;
-    Node* tail = NULL;
-    
-   // head = node1;
-    //tail = node1;
-    
-    {   //inset at head
-    
-        data = 252;
-        insertAtHead(head, tail, data);
-        
-        data = 2;
-        insertAtHead(head, tail, data);
-    }
-    
+   Node* node1 = NULL;
+   node1 = new Node(50);
    
-    {   //insert at tail
+   Node* head;
+   head = node1;
+   
+   Node* tail;
+   tail = node1;
+   
+   
+    {   //insert At Tail
     
-        data = 125;
-        insertAtTail(head, tail,  data);
+        data = 60;
+        insertAtTail(tail, data);
         
-        data = 15;
-        insertAtTail(head, tail,  data);
+        data = 70;
+        insertAtTail(tail, data);
         
-        data = 1598;
-        insertAtTail(head, tail,  data);
+        data = 80;
+        insertAtTail(tail, data);
+        
+        data = 90;
+        insertAtTail(tail, data);
+        
+        data = 100;
+        insertAtTail(tail, data);
     }
+    cout<<"List: ";
+    displayData(head);
     
-    {   //insert at any position
-    
-        position = 1, data = 32;
-        insertAtPosition(head, tail, position, data);
+    cout<<"After Delete: ";
+    {
         
-        position = 2, data = 456;
-        insertAtPosition(head, tail, position, data);
+        position = 6;
+        deleteNode(head, tail, position);
+       
+        position = 3;
+        deleteNode(head, tail, position);
         
-        position = 8, data = 2252;
-        insertAtPosition(head, tail, position, data);
+        position = 1;
+        deleteNode(head, tail, position);
+        
         
     }
     displayData(head);
     
-    {
-        cout<<"Head: "<<head->data<<endl;
-        cout<<"Tail: "<<tail->data<<endl;
+    if(head == NULL){
+        cout<<"Emoty";
     }
-   
+    
+    {   //print head and tail;
+        
+        cout<<"Head: "<<head -> data<<endl;
+        cout<<"Tail: "<<tail -> data<<endl;
+    }
 
     return 0;
 }

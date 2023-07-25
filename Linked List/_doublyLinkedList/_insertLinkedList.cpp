@@ -25,7 +25,7 @@ void displayData(Node* head){
     Node* temp = head;
     
     while(temp != NULL){
-        cout<<temp -> data<<"->";
+        cout<<temp -> data<<" -> ";
         temp = temp -> nextNode;
     }
     cout<<endl;
@@ -44,16 +44,30 @@ void linkedListLength(Node* head, int& length){
     cout<<endl;
 }
 
-void insertAtHead(Node* &head, int &data){
+void insertAtHead(Node* &head, Node* &tail, int &data){
     Node* temp = new Node(data);
+    
+    if(head==NULL){
+        head = temp;
+        tail = temp;
+        return ;
+    }
+    
     temp -> nextNode = head;
     head -> previousNode = temp;
     head = temp;
 }
 
-void insertAtTail(Node* &tail, int &data){
+void insertAtTail(Node* &head, Node* &tail, int &data){
     
     Node* temp = new Node(data);
+    
+    if(tail == NULL){
+        tail = temp;
+        head = temp;
+        
+        return ;
+    }
     
     temp -> previousNode = tail;
     tail -> nextNode = temp;
@@ -64,7 +78,7 @@ void insertAtTail(Node* &tail, int &data){
 
 void insertAtPosition(Node* &head, Node* &tail, int& position, int& data){
     if(position==1){
-        insertAtHead(head, data);
+        insertAtHead(head, tail, data);
         return  ;
     }
     
@@ -77,7 +91,7 @@ void insertAtPosition(Node* &head, Node* &tail, int& position, int& data){
     }
     
     if(temp -> nextNode == NULL){
-        insertAtTail(tail, data);
+        insertAtTail(head, tail, data);
         return ;
     }
     
@@ -93,34 +107,34 @@ void insertAtPosition(Node* &head, Node* &tail, int& position, int& data){
 int main()
 {
     int length = 0, data = 0, position = 0;
-    Node* node1 = new Node(225);
+    //Node* node1 = new Node(225);
     
     Node* head = NULL;
     Node* tail = NULL;
     
-    head = node1;
-    tail = node1;
+   // head = node1;
+    //tail = node1;
     
     {   //inset at head
     
         data = 252;
-        insertAtHead(head, data);
+        insertAtHead(head, tail, data);
         
         data = 2;
-        insertAtHead(head, data);
+        insertAtHead(head, tail, data);
     }
     
    
     {   //insert at tail
     
         data = 125;
-        insertAtTail(tail,  data);
+        insertAtTail(head, tail,  data);
         
         data = 15;
-        insertAtTail(tail,  data);
+        insertAtTail(head, tail,  data);
         
         data = 1598;
-        insertAtTail(tail,  data);
+        insertAtTail(head, tail,  data);
     }
     
     {   //insert at any position
@@ -131,12 +145,11 @@ int main()
         position = 2, data = 456;
         insertAtPosition(head, tail, position, data);
         
-        position = 9, data = 2252;
+        position = 8, data = 2252;
         insertAtPosition(head, tail, position, data);
         
     }
-    
-    linkedListLength(head, length);
+    displayData(head);
     
     {
         cout<<"Head: "<<head->data<<endl;

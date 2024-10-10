@@ -1,11 +1,16 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+//1. divide array into two part by using mid
+//2. call that function until array divide into single array. ex: 5, 6, 7
+//3. create two new array and copy of these array
+//4. then compare and merge into original array;
+
 void merge(int* arr, int s, int e){
 
-    //first create two array by given size
-    //then copy value into these two array
-    //compare two array and compare them smaller or bigger
+    //1. Create two array by given size
+    //2. Copy main array's value into these two array
+    //3. Compare two array and marge them [smaller or bigger]
 
     //find the mid
     int mid = s + (e-s)/2;
@@ -21,6 +26,7 @@ void merge(int* arr, int s, int e){
     int *rightArray = new int[length2];
 
     //copy, main array to left, right array
+    //here k is the main array index
     int k = s;
     for (size_t i = 0; i < length1; i++){
         leftArray[i] = arr[k++];
@@ -30,8 +36,9 @@ void merge(int* arr, int s, int e){
     for (size_t i = 0; i < length2; i++){
         rightArray[i] = arr[k++];
     }
+    //upper portion is for create new array and copy value from main array;
 
-    //now this time to merge array and sort
+    //now this time to sort and merge array
     int index1 = 0;
     int index2 = 0;
     k = s;
